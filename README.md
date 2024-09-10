@@ -1,7 +1,7 @@
 # DDNS over CloudFlare
 Реализация системы динамических доменных имён через API CloudFlare.  
 DDNS получает ваш ip адрес через [www.cloudflare.com/cdn-cgi/trace](https://www.cloudflare.com/cdn-cgi/trace)  
-Этот проект является продолжением [этого](https://github.com/Andcool-Systems/DDNS_over_CloudFlare) проекта на Java
+Данный проект является продолжением [этого](https://github.com/Andcool-Systems/DDNS_over_CloudFlare) проекта на Java.
 
 ## config.yaml
 Для работы проекту нужен конфигурационный файл `config.yaml`, находящийся в корне проекта и имеющий следующее содержание:
