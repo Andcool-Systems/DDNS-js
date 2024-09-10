@@ -1,7 +1,6 @@
 import axios from "axios";
 import validator from 'validator';
 
-
 export interface IPInterface {
     ip: string,
     version: 4 | 6,
@@ -16,6 +15,10 @@ export class IP {
 
         const ip = data.split('\n').map((line) => line.split('=')).filter((line) => line[0] === 'ip')[0][1];
         const isV4 = validator.isIP(ip, 4);
+        if (!isV4 && !validator.isIP(ip, 6)) {
+            console.error(`Invalid IP received: ${ip}`);
+            return null;
+        }
 
         return { ip: ip, version: isV4 ? 4 : 6, type: isV4 ? 'A' : 'AAAA' };
     }

@@ -23,7 +23,7 @@ const start = async () => {
             if (record.content === ip.ip && record_config?.proxied === record.proxied) return;
             await Cf.updateRecord(ip, record_config?.proxied ?? true, record);
             console.log(`Updated content for ${record.name}: ${record.content} -> ${ip.ip}`);
-        })
+        });
         not_existing_records.forEach(async record => {
             await Cf.createRecord(record.hostname, ip, record.proxied);
             console.log(`Created record ${record.hostname} with content ${ip.ip}`);

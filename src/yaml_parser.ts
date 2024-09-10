@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 import { load } from 'js-yaml';
 import * as yup from 'yup';
-import { ValidationError } from 'yup';
 
 interface Config {
     zone: string;

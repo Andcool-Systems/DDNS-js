@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { IPInterface } from './IP';
 
-
 interface Record {
     id: string,
     zone_id: string,
@@ -13,6 +12,7 @@ interface Record {
     ttl: number
 
 }
+
 interface CFRecordResponse {
     result: Record[]
 }
@@ -20,6 +20,7 @@ interface CFRecordResponse {
 export class CloudFlare {
     zone: string;
     token: string;
+
     constructor(zone: string, token: string) {
         this.zone = zone
         this.token = token;
