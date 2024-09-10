@@ -1,0 +1,8 @@
+services:
+  ddns_js:
+    container_name: ddns_js
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: npm run start
