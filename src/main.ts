@@ -16,6 +16,10 @@ const start = async () => {
         }
 
         const records = await Cf.getRecords(config.records.map((record) => record.hostname));
+        if (!records) {
+            console.error(`Can't get list of records. Skipping...`);
+            return;
+        }
         const not_existing_records = config.records.filter(record => !records.map(record => record.name).includes(record.hostname));
 
         records.forEach(async record => {
