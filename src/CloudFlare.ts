@@ -34,7 +34,7 @@ export class CloudFlare {
             }
         )
         const cf_response = response.data as CFRecordResponse;
-        return cf_response.result?.filter((record) => records.includes(record.name));
+        return cf_response.result?.filter((record) => records.includes(record.name) && ['A', 'AAAA'].includes(record.type));
     }
 
     createRecord = async (name: string, content: IPInterface, proxied: boolean): Promise<Record | null> => {
