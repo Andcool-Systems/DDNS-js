@@ -9,30 +9,36 @@ const start = async () => {
     const Ip = new IP();
 
     setInterval(async () => {
-        const ip = await Ip.getIP();
-        if (!ip) {
-            console.error(`Can't get current ip address. Skipping...`);
-            return;
-        }
+        try {
+            const ip = await Ip.getIP();
+            if (!ip) {
+                console.error(`Can't get current ip address. Skipping...`);
+                return;
+            }
 
-        const records = await Cf.getRecords(config.records.map((record) => record.hostname));
-        if (!records) {
-            console.error(`Can't get list of records. Skipping...`);
-            return;
-        }
-        const not_existing_records = config.records.filter(record => !records.map(record => record.name).includes(record.hostname));
+            const records = await Cf.getRecords(config.records.map((record) => record.hostname));
+            if (!records) {
+                console.error(`Can't get list of records. Skipping...`);
+                return;
+            }
+            const not_existing_records = config.records
+                .filter(record => !records.map(record => record.name).includes(record.hostname));
 
-        records.forEach(async record => {
-            const record_config = config.records.find(record_config => record_config.hostname === record.name);
-            if (record.content === ip.ip && record_config?.proxied === record.proxied) return;
-            await Cf.updateRecord(ip, record_config?.proxied ?? true, record);
-            console.log(`Updated content for ${record.name}: ${record.content} -> ${ip.ip}`);
-        });
-        not_existing_records.forEach(async record => {
-            await Cf.createRecord(record.hostname, ip, record.proxied);
-            console.log(`Created record ${record.hostname} with content ${ip.ip}`);
-        });
+            records.forEach(async record => {
+                const record_config = config.records.find(record_config => record_config.hostname === record.name);
+
+                if (record.content === ip.ip && record_config?.proxied === record.proxied) return;
+                await Cf.updateRecord(ip, record_config?.proxied ?? true, record);
+                console.log(`Updated content for ${record.name}: ${record.content} -> ${ip.ip}`);
+            });
+            not_existing_records.forEach(async record => {
+                await Cf.createRecord(record.hostname, ip, record.proxied);
+                console.log(`Created record ${record.hostname} with content ${ip.ip}`);
+            });
+        } catch (e) {
+            console.error(`An error occurred: ${e}`)
+        }
     }, config.period * 1000);
 }
 
-start();
+start();  // Entry point

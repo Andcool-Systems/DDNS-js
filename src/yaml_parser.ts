@@ -9,7 +9,7 @@ interface Config {
     records: {
         hostname: string,
         proxied: boolean
-    }[]
+    }[];
 }
 
 const configSchema = yup.object({

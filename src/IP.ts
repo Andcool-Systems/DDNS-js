@@ -13,7 +13,13 @@ export class IP {
         if (response.status !== 200) return null;
         const data = response.data as string;
 
-        const ip = data.split('\n').map((line) => line.split('=')).filter((line) => line[0] === 'ip')[0][1];
+        const ip_line = data.split('\n').map((line) => line.split('=')).find((line) => line[0] === 'ip');
+        if (!ip_line) {
+            console.error('Cannot get ip from response');
+            return null;
+        }
+
+        const ip = ip_line[1];
         const isV4 = validator.isIP(ip, 4);
         if (!isV4 && !validator.isIP(ip, 6)) {
             console.error(`Invalid IP received: ${ip}`);

@@ -10,7 +10,6 @@ interface Record {
     content: string,
     proxied: boolean,
     ttl: number
-
 }
 
 interface CFRecordResponse {
@@ -26,7 +25,7 @@ export class CloudFlare {
         this.token = token;
     }
 
-    getRecords = async (records: string[]) => {
+    getRecords = async (records: string[]): Promise<Record[] | undefined> => {
         const response = await axios.get(`https://api.cloudflare.com/client/v4/zones/${this.zone}/dns_records`,
             {
                 headers: { Authorization: `Bearer ${this.token}` },
@@ -37,7 +36,7 @@ export class CloudFlare {
         return cf_response.result?.filter((record) => records.includes(record.name) && ['A', 'AAAA'].includes(record.type));
     }
 
-    createRecord = async (name: string, content: IPInterface, proxied: boolean): Promise<Record | null> => {
+    createRecord = async (name: string, content: IPInterface, proxied: boolean): Promise<Record | undefined> => {
         const response = await axios.post(`https://api.cloudflare.com/client/v4/zones/${this.zone}/dns_records`,
             {
                 content: content.ip,
@@ -53,7 +52,7 @@ export class CloudFlare {
         return response.data.result as Record;
     }
 
-    updateRecord = async (content: IPInterface, proxied: boolean, record: Record): Promise<Record | null> => {
+    updateRecord = async (content: IPInterface, proxied: boolean, record: Record): Promise<Record | undefined> => {
         const response = await axios.patch(`https://api.cloudflare.com/client/v4/zones/${this.zone}/dns_records/${record.id}`,
             {
                 content: content.ip,
