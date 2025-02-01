@@ -5,7 +5,7 @@
 
 **When is DDNS useful?**
 
-- If you have a **public (static) IP address** that changes periodically.
+- If you have a **public white IP address** that changes periodically.
 - When you need to access your device from the internet using a stable domain name.
 - In cases where your internet provider assigns dynamic IP addresses.
 
